@@ -3,13 +3,12 @@ apply plugin: 'kotlin'
 sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
 
-
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "org.jetbrains.kotlin:kotlin-stdlib:1.1.1"
     compile 'com.squareup:javapoet:1.8.0'
+    compile project(':annotations')
 
     testCompile 'junit:junit:4.12'
-
+    testCompile 'com.google.testing.compile:compile-testing:0.6'
 }
