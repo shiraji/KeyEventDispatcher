@@ -38,7 +38,7 @@ class KeyEventDispatcherProcessor : AbstractProcessor() {
                     .classBuilder("${it.simpleName}\$FOOO")
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
             val javaFile = JavaFile.builder("com.github.shiraji.foo", builder.build())
-                    .addFileComment("Generated code from Ken-Ken-Pa. Do not modify!")
+                    .addFileComment("Generated code from KeyEventDispatcher. Do not modify!")
                     .build()
             javaFile.writeTo(filer)
             javaFile.writeTo(System.out)
