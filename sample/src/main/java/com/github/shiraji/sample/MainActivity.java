@@ -1,8 +1,11 @@
 package com.github.shiraji.sample;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
+import com.github.shiraji.keyevent.annotations.KeyEvent;
+
+@KeyEvent
 public class MainActivity extends AppCompatActivity {
 
     @Override
