@@ -18,6 +18,10 @@ class KeyEventDispatcherProcessor : AbstractProcessor() {
     private lateinit var typeUtils: Types
     private lateinit var filer: Filer
 
+    companion object {
+        const val POSTFIX = "\$KeyEventDispatcher"
+    }
+
     override fun init(processingEnv: ProcessingEnvironment?) {
         super.init(processingEnv)
 
@@ -35,9 +39,8 @@ class KeyEventDispatcherProcessor : AbstractProcessor() {
     override fun process(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment?): Boolean {
         roundEnv?.getElementsAnnotatedWith(KeyEvent::class.java)?.forEach {
             val builder = TypeSpec
-                    .classBuilder("${it.simpleName}\$FOOO")
+                    .classBuilder("${it.simpleName}$POSTFIX")
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-
             val javaFile = JavaFile.builder(elementUtils.getPackageOf(it).qualifiedName.toString(), builder.build())
                     .addFileComment("Generated code from KeyEventDispatcher. Do not modify!")
                     .build()
