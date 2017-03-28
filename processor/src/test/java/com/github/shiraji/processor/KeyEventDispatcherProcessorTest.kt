@@ -16,8 +16,10 @@ class KeyEventDispatcherProcessorTest : TestCase() {
         val source = JavaFileObjects.forSourceString("test.Foo", Joiner.on('\n').join(
                 "package test;",
                 "import com.github.shiraji.keyevent.annotations.KeyEvent;",
-                "@KeyEvent",
                 "public class Foo {",
+                "public class Foo2 {",
+                "  @KeyEvent void foo() {}",
+                "}",
                 "}"
         ))
 
