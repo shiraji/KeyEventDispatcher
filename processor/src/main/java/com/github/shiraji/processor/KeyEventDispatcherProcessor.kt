@@ -7,6 +7,7 @@ import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.Filer
 import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
+import javax.lang.model.element.Element
 import javax.lang.model.element.Modifier
 import javax.lang.model.element.TypeElement
 import javax.lang.model.util.Elements
@@ -38,17 +39,32 @@ class KeyEventDispatcherProcessor : AbstractProcessor() {
 
     override fun process(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment?): Boolean {
         roundEnv?.getElementsAnnotatedWith(KeyEvent::class.java)?.forEach {
+
             val builder = TypeSpec
-                    .classBuilder("${it.simpleName}$POSTFIX")
+                    .classBuilder(generateClassNameFrom(it))
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-            val javaFile = JavaFile.builder(elementUtils.getPackageOf(it).qualifiedName.toString(), builder.build())
-                    .addFileComment("Generated code from KeyEventDispatcher. Do not modify!")
+
+            val enclosingElement = it.enclosingElement.getMostOuterEnclosingElement()
+
+            val javaFile = JavaFile.builder(elementUtils.getPackageOf(enclosingElement).qualifiedName.toString(), builder.build())
+                    .addFileComment("Generated code from KeyEventDispatcher. Do not modify! $it")
                     .build()
             javaFile.writeTo(filer)
             javaFile.writeTo(System.out)
         }
         return true
     }
+
+    private fun generateClassNameFrom(element: Element): String {
+        val elements = mutableListOf<Element>()
+        var enclosingElement = element.enclosingElement
+        while(enclosingElement != null && enclosingElement is TypeElement) {
+            elements.add(enclosingElement)
+            enclosingElement = enclosingElement.enclosingElement
+        }
+        return elements.reversed().map { it.simpleName }.joinToString(separator = "", postfix = POSTFIX)
+    }
+
     private fun Element.getMostOuterEnclosingElement(): Element {
         val enclosingElement = enclosingElement ?: return this
         return enclosingElement.getMostOuterEnclosingElement()
