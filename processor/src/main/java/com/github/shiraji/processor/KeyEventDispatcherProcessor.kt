@@ -49,4 +49,8 @@ class KeyEventDispatcherProcessor : AbstractProcessor() {
         }
         return true
     }
+    private fun Element.getMostOuterEnclosingElement(): Element {
+        val enclosingElement = enclosingElement ?: return this
+        return enclosingElement.getMostOuterEnclosingElement()
+    }
 }
